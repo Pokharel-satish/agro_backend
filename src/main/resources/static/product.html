@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Collection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+        }
+        .product {
+            width: calc(20% - 20px);
+            margin-bottom: 20px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            background-color: #fff;
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .description, .price, .status, .quantity, .add-to-cart {
+            margin-top: 10px;
+        }
+        .out-of-stock {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: red;
+        }
+        .out-of-stock:hover{
+            background-color: white;
+        }
+        .quantity select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .add-to-cart {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color:orange;
+            color: white;
+            cursor: pointer;
+        }
+        .add-to-cart:hover {
+            background-color: orangered;
+        }
+        .buy-now{padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #45a049 ;
+            color: white;
+            cursor: pointer;
+
+        }
+        .buy-now:hover {
+          background-color:darkgreen;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 40%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .checkout-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="product">
+        <img src="Images/karela.jpeg" alt="Karela">
+        <div class="description">मकवानपुरको करेला</div>
+        <div class="price">मूल्य: रु 115/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityKarela">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Karela', 115, document.getElementById('quantityKarela').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Karela', 115, document.getElementById('quantityKarela').value)">Buy Now</button>
+    </div>
+
+    <div class="product">
+        <img src="Images/mango.jpeg" alt="Mango">
+        <div class="description">नेपालगन्जको आँप</div>
+        <div class="price">मूल्य: रु 150/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityMango">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Mango', 150, document.getElementById('quantityMango').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Mango', 150, document.getElementById('quantityMango').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/apple.jpeg" alt="Apple">
+        <div class="description">जुम्लाको स्याउ</div>
+        <div class="price">मूल्य: रु 125/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityApple">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Apple', 125, document.getElementById('quantityApple').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Apple', 125, document.getElementById('quantityApple').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/adhuwa.jpeg" alt="Ginger">
+        <div class="description">सिन्धुलीको अदुवा</div>
+        <div class="price">मूल्य: रु 120/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityGinger">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Ginger', 120, document.getElementById('quantityGinger').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Ginger', 120, document.getElementById('quantityGinger').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/lapsi.jpeg" alt="Lapsi">
+        <div class="description">धादिङको लप्सी</div>
+        <div class="price">मूल्य: रु 118/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityLapsi">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Lapsi', 118, document.getElementById('quantityLapsi').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Lapsi', 118, document.getElementById('quantityLapsi').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/onion.jpeg" alt="Onion">
+        <div class="description">झापाको प्याज</div>
+        <div class="price">मूल्य: रु 112/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityOnion">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Onion', 112, document.getElementById('quantityOnion').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Onion', 112, document.getElementById('quantityOnion').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/orange.jpeg" alt="Orange">
+        <div class="description">स्याङ्जाको सुन्तला</div>
+        <div class="price">मूल्य: रु 122/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityOrange">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Orange', 122, document.getElementById('quantityOrange').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Orange', 122, document.getElementById('quantityOrange').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/potato.jpeg" alt="Potato">
+        <div class="description">मुस्ताङको आलु</div>
+        <div class="price">मूल्य: रु 108/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityPotato">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Potato', 108, document.getElementById('quantityPotato').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Potato', 108, document.getElementById('quantityPotato').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/carrot.jpeg" alt="Carrot">
+        <div class="description">चितवनको गाजर</div>
+        <div class="price">मूल्य: रु 105/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityCarrot">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('Carrot', 105, document.getElementById('quantityCarrot').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('Carrot', 105, document.getElementById('quantityCarrot').value)">Buy Now</button>
+    </div>
+    <div class="product">
+        <img src="Images/lemon.jpeg" alt="lemon">
+        <div class="description">विकासे कागती</div>
+        <div class="price">मूल्य: रु 155/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select id="quantityLemon">
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="add-to-cart" onclick="addToCart('lemon', 155, document.getElementById('quantityLemon').value)">Add to Cart</button>
+        <button class="buy-now" onclick="buyNow('lemon', 155, document.getElementById('quantityLemon').value)">Buy Now</button>
+    </div>
+    <div class="product out-of-stock">
+        <img src="Images/sugarcane.jpeg" alt="sugarcane">
+        <div class="description">हरियो तराइको उखु</div>
+        <div class="price">मूल्य: रु 200/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select disabled>
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="out-of-stock" disabled>Out of Stock</button>
+    </div>
+    <div class="product out-of-stock">
+        <img src="Images/guava.jpeg" alt="Guava">
+        <div class="description">चितवनको रातो अम्बा</div>
+        <div class="price">मूल्य: रु 70/kg</div>
+        <div class="quantity">
+            मात्रा:
+            <select disabled>
+                <option value="1kg">1 kg</option>
+                <option value="2kg">2 kg</option>
+                <option value="5kg">5 kg</option>
+            </select>
+        </div>
+        <button class="out-of-stock" disabled>Out of Stock</button>
+    </div>
+    <script>
+        let cart = [];
+    
+        // Function to add an item to the cart
+        function addToCart(product, price, quantity) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const addedDate = new Date().toISOString(); // Get the current date
+        cart.push({ product, price, quantity });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        window.location.href = 'myCart.html';
+         // Redirect to myCart.html after adding to cart
+    }
+
+
+        // Function to handle the "Buy Now" functionality
+        function buyNow(product, price, quantity) {
+            // Ensure quantity is a valid number
+            let qty = parseInt(quantity);
+            if (isNaN(qty) || qty <= 0) {
+                alert("Invalid quantity. Please enter a valid number.");
+                return;
+            }
+    
+            // Ensure price is a valid number
+            let productPrice = parseFloat(price);
+            if (isNaN(productPrice) || productPrice <= 0) {
+                alert("Invalid price.");
+                return;
+            }
+    
+            // Add product to the cart array
+            cart.push({ product, price: productPrice, quantity: qty });
+    
+            // Navigate to checkout page with cart details in URL
+            window.location.href = 'checkout.html?cart=' + encodeURIComponent(JSON.stringify(cart));
+        }
+    
+        // Function to parse URL parameters (used for checkout)
+        function getCartFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cartData = urlParams.get('cart');
+            if (cartData) {
+                return JSON.parse(decodeURIComponent(cartData));
+            }
+            return [];
+        }
+    
+        // Optional: Display the cart details on the checkout page
+        function displayCart() {
+            cart = getCartFromURL();
+            // Example code to display the cart (you can customize this)
+            cart.forEach(item => {
+                console.log("Product: " + item.product + ", Price: रु " + item.price + ", Quantity: " + item.quantity);
+            });
+        }
+    </script>
+    
+</body>
+</html>

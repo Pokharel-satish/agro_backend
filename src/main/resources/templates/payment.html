@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ne" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My-sewa Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .payment-container {
+            width: 500px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        .fixed-amount, .amount-label {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .receiver-info {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .payment-button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .payment-button:hover {
+            background-color: #45a049;
+        }
+        .payment-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .input-label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="fixed-amount">रकम: रु <span th:text="${amount}">1000</span></div>
+        <div class="receiver-info">प्राप्तकर्ता: हामी किसान<br>My-sewa ID: <span th:text="${mySewaId}">********</span></div>
+
+        <!-- Box for कुल रकम -->
+        <form id="payment-form" method="POST" action="#" th:action="@{/processPayment}">
+            <div class="input-group">
+                <span class="input-label">भुक्तानी गर्नुपर्ने:</span>
+                <input class="payment-input" id="total-price-input" name="amount" type="hidden" th:value="${amount}"> <!-- Changed to hidden -->
+                <span id="display-amount" class="payment-input" th:text="${amount}">रु 750</span> <!-- Displayed amount -->
+            </div>
+
+            <!-- Fixed तरकारी/फलफुल Input (non-editable) -->
+            <div class="input-group">
+                <span class="input-label">तरकारी/फलफुल:</span>
+                <input class="payment-input" id="product-name-input" name="productName" type="hidden" th:value="${productName}" readonly>
+                <span class="payment-input" id="display-product-name" th:text="${productName}">Product Name</span> <!-- Displayed product name -->
+            </div>
+
+            <!-- Remarks Box -->
+            <div class="input-group">
+                <span class="input-label">Remarks:</span>
+                <input class="payment-input" name="remarks" type="text" placeholder="केहि लेख्नुहोस समान बारे" aria-label="Remarks for the product">
+            </div>
+
+            <!-- Payment Button -->
+            <button type="submit" class="payment-button">भुक्तानी गर्नुहोस्</button>
+        </form>
+    </div>
+
+    <script>
+        // Get product name and total price from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const productName = decodeURIComponent(urlParams.get('product'));
+        const totalPrice = decodeURIComponent(urlParams.get('total'));
+
+        // Set total price and product name in the respective fields
+        document.getElementById('total-price-input').value = totalPrice.replace("रु", "").trim(); // Set numeric value in hidden input
+        document.getElementById('display-amount').textContent = `रु ${totalPrice}`; // Display formatted amount
+        document.getElementById('product-name-input').value = productName; // Set product name in hidden input
+        document.getElementById('display-product-name').textContent = productName; // Display product name
+    </script>
+</body>
+</html>

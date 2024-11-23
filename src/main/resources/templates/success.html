@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ne" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>भुक्तानी सफल</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .success-container {
+            width: 500px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        .success-message {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .details {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .home-button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .home-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-message">भुक्तानी सफल भयो!</div>
+        <div class="details">
+            <p><strong>प्राप्तकर्ता:</strong> हामी किसान</p>
+            <p><strong>भुक्तानी गरिएको रकम:</strong> रु <span th:text="${totalPrice}"></span></p>
+            <p><strong>तरकारी/फलफुल:</strong> <span th:text="${productName}"></span></p>
+        </div>
+        <button class="home-button" onclick="goHome()">मुख्य पृष्ठमा जानुहोस्</button>
+    </div>
+
+    <script>
+        // Redirect to home page
+        function goHome() {
+            window.location.href = 'product.html'; // Redirect to the product page
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Set a clean font */
+            margin: 20px; /* Add margin to body */
+            background-color: #f9f9f9; /* Light background for contrast */
+        }
+        
+        h2 {
+            text-align: center; /* Center the heading */
+            color: #333; /* Dark gray color for the heading */
+        }
+
+        table {
+            width: 100%; /* Full-width table */
+            border-collapse: collapse; /* Collapse borders */
+            margin-bottom: 20px; /* Space below table */
+        }
+
+        th, td {
+            border: 1px solid #ddd; /* Light gray border */
+            padding: 10px; /* Padding for table cells */
+            text-align: left; /* Align text to the left */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Light gray background for headers */
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight row on hover */
+        }
+
+        #total-price {
+            font-weight: bold;
+            align-items: center;  /* Bold total price */
+            font-size: 1.2em; /* Slightly larger font */
+            margin: 10px 0; /* Margin above and below */
+        }
+
+        #date-today {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        button {
+            background-color: transparent; /* Transparent background for cross button */
+            border: none; /* No border */
+            color: red; /* Red color for the cross */
+            font-size: 1.5em; /* Increase font size for visibility */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        button:hover {
+            color: darkred; /* Darker red on hover */
+        }
+    </style>
+</head>
+<body>
+    <h2>My Cart</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price per kg</th>
+                <th>Total Price</th>
+                <th>Details</th> <!-- Changed from Date Added to Details -->
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cart-table-body"></tbody>
+    </table>
+    <div id="total-price">Total: रु 0.00</div>
+    <div id="date-today"></div> <!-- Display today's date here -->
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalPrice = 0;
+
+        // Populate the cart table and calculate total price
+        function updateCartTable() {
+            const tableBody = document.getElementById('cart-table-body');
+            tableBody.innerHTML = ''; // Clear table before repopulating
+            totalPrice = 0;  // Reset total price
+
+            cart.forEach((item, index) => {
+                const row = document.createElement('tr');
+
+                // Ensure quantity is a number for calculation
+                const quantity = parseFloat(item.quantity);
+                const total = item.price * quantity;
+                totalPrice += total;
+
+                // Create a unique product link redirecting to foto.html with the product name
+                const productLink = `foto.html?product=${encodeURIComponent(item.product)}`;
+
+                row.innerHTML = `
+                    <td>${item.product}</td>
+                    <td>${quantity} kg</td>
+                    <td>रु ${item.price}</td>
+                    <td>रु ${total.toFixed(2)}</td>
+                    <td><a href="${productLink}" target="_blank">View Product</a></td> <!-- Link to product -->
+                    <td><button onclick="removeItem(${index})">✖</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update total price at the bottom
+            document.getElementById('total-price').textContent = 'Total: रु ' + totalPrice.toFixed(2);
+
+            // Display today's date in "Date Today" section
+            const today = new Date().toLocaleDateString('ne-NP'); // Current date formatted in Nepali
+            document.getElementById('date-today').textContent = 'Date: ' + today;
+        }
+
+        // Remove an item from the cart
+        function removeItem(index) {
+            cart.splice(index, 1);  // Remove the selected item
+            localStorage.setItem('cart', JSON.stringify(cart));  // Update the cart in localStorage
+            updateCartTable();  // Update the cart table
+        }
+
+        // Initialize cart table
+        updateCartTable();
+    </script>
+</body>
+</html>

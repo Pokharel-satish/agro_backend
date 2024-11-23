@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .checkout-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Checkout</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price per kg</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody id="checkout-table-body"></tbody>
+    </table>
+    <div class="total" id="total-price">Total: रु 0</div>
+    <button class="checkout-button" onclick="completePurchase()">Complete Purchase</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const cartData = urlParams.get('cart') ? JSON.parse(decodeURIComponent(urlParams.get('cart'))) : [];
+        
+        if (!cartData.length) {
+            alert("No items found in cart. Please try again.");
+        }
+
+        let totalPrice = 0;
+
+        function updateCheckoutTable() {
+            const tableBody = document.getElementById('checkout-table-body');
+            cartData.forEach(item => {
+                const row = document.createElement('tr');
+                const total = item.price * item.quantity;
+                totalPrice += total;
+
+                row.innerHTML = `
+                    <td>${item.product || "Unknown Product"}</td>
+                    <td>${item.quantity || 0} kg</td>
+                    <td>रु ${item.price || 0}</td>
+                    <td>रु ${total || 0}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+            document.getElementById('total-price').textContent = 'Total: रु ' + totalPrice;
+        }
+
+        function completePurchase() {
+            const encodedCart = encodeURIComponent(JSON.stringify(cartData));
+            const productName = encodeURIComponent(cartData[0]?.product || "Unknown Product");
+            const totalPriceParam = encodeURIComponent(totalPrice);
+
+            // Construct the URL with parameters
+            const paymentUrl = `/payment?cart=${encodedCart}&product=${productName}&total=${totalPriceParam}`;
+window.location.href = paymentUrl;
+
+        }
+
+        updateCheckoutTable();
+    </script>
+</body>
+</html>
